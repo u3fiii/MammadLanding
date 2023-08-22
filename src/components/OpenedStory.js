@@ -27,7 +27,7 @@ function OpenedStory({ ads, currentAdIndex, setOpenStory, setCurrentAdIndex }) {
           prevIndex === ads.length - 1 ? 0 : prevIndex + 1
         );
       }
-    }, 2000);
+    }, 1500);
 
     return () => {
       clearInterval(interval);
