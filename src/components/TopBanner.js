@@ -38,10 +38,7 @@ function TopBanner() {
             {isClicked ? "کپی شد!" : "کپی کردن کد"}
           </div>
           <div className="copy-img">
-            <img
-              src={isClicked ? whiteCheck : copy}
-              alt={isClicked ? "White Checkmark" : "Copy Icon"}
-            />
+            <img src={isClicked ? whiteCheck : copy} />
           </div>
         </div>
       </div>

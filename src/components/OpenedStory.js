@@ -6,6 +6,10 @@ import whiteToman from "../assets/img/white-toman.svg";
 
 function OpenedStory({ ads, currentAdIndex, setOpenStory, setCurrentAdIndex }) {
   const [currentAd, setCurrentAd] = useState(null);
+  const [initialTouchPosition, setInitialTouchPosition] = useState(null);
+  const [swipeDetected, setSwipeDetected] = useState(false);
+  const [debounceTimer, setDebounceTimer] = useState(null);
+  const [opened, setOpened] = useState(false);
 
   const handleClose = () => {
     setOpenStory(false);
@@ -13,19 +17,75 @@ function OpenedStory({ ads, currentAdIndex, setOpenStory, setCurrentAdIndex }) {
 
   useEffect(() => {
     setCurrentAd(ads[currentAdIndex]);
-  }, [ads, currentAdIndex]);
+    setSwipeDetected(false); // Reset the swipe detection flag
+  }, [ads, currentAdIndex, setSwipeDetected]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentAdIndex((prevIndex) =>
-        prevIndex === ads.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 3000);
+      if (!swipeDetected) {
+        setCurrentAdIndex((prevIndex) =>
+          prevIndex === ads.length - 1 ? 0 : prevIndex + 1
+        );
+      }
+    }, 2000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [ads.length, setCurrentAdIndex]);
+  }, [ads.length, setCurrentAdIndex, swipeDetected]);
+
+  const handleSwipeStart = (event) => {
+    const touch = event.touches[0];
+    setInitialTouchPosition(touch.clientX);
+  };
+
+  const handleSwipeEnd = (event) => {
+    const touch = event.changedTouches[0];
+    const finalTouchPosition = touch.clientX;
+    const deltaX = finalTouchPosition - initialTouchPosition;
+
+    if (deltaX > 50 && !swipeDetected) {
+      handleSwipeRight();
+      setSwipeDetected(true);
+      debounceAutoUpdate();
+    } else if (deltaX < -50 && !swipeDetected) {
+      handleSwipeLeft();
+      setSwipeDetected(true);
+      debounceAutoUpdate();
+    }
+  };
+
+  const handleSwipeRight = () => {
+    setCurrentAdIndex((prevIndex) =>
+      prevIndex === ads.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handleSwipeLeft = () => {
+    setCurrentAdIndex((prevIndex) =>
+      prevIndex === 0 ? ads.length - 1 : prevIndex - 1
+    );
+  };
+
+  const debounceAutoUpdate = () => {
+    clearTimeout(debounceTimer);
+
+    const timer = setTimeout(() => {
+      setSwipeDetected(false);
+    }, 1000);
+
+    setDebounceTimer(timer);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpened(true);
+    }, 10);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   if (!currentAd || !currentAd.images) {
     return null;
@@ -45,8 +105,13 @@ function OpenedStory({ ads, currentAdIndex, setOpenStory, setCurrentAdIndex }) {
     window.open(`https://www.pindo.ir/ads/${currentAd.id}/`, "_blank");
   };
 
+  const openStoryClass = opened ? "open-story opened" : "open-story";
   return (
-    <div className="open-story">
+    <div
+      className={openStoryClass}
+      onTouchStart={handleSwipeStart}
+      onTouchEnd={handleSwipeEnd}
+    >
       <div className="close-container">
         <div className="rect-progress-container">
           {ads.map((ad, index) => {
@@ -89,14 +154,14 @@ function OpenedStory({ ads, currentAdIndex, setOpenStory, setCurrentAdIndex }) {
         <div className="prices">
           <div className="off">{formattedOff}</div>
           <div className="final-price">
-            <img src={whiteToman} className="white-toman" />
+            <img src={whiteToman} className="white-toman" alt="Toman" />
             {formattedFinalPrice}
           </div>
         </div>
         <div className="discount-label">۳۵٪ تخفیف</div>
       </div>
       <div className="open-submit-btn" onClick={handleOpenLink}>
-        مشاهده و خرید
+        مشاهده وخرید آگهی
       </div>
     </div>
   );

@@ -137,19 +137,42 @@ body {
   width: 70px;
   height: 70px;
   border-radius: 50px;
-  border: 3px solid rgb(207, 207, 207);
+  border: 3px solid #dbdbdb;
   pointer-events: none;
 }
 
 .image-wrapper {
-  border: 1px solid rgb(233, 233, 233);
-  border-radius: 60px;
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
 }
 
+.loading-circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #ffcd00;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1.15);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0.7;
+  }
+}
 .title {
   margin: 8px 0;
   height: 40px;
@@ -404,6 +427,24 @@ body {
   overflow: hidden;
 }
 
+.price-cont {
+  margin-top: 4px;
+  font-family: yekanMedium;
+}
+
+.off-price {
+  font-size: 14px;
+  color: rgb(214, 60, 60);
+  text-decoration: line-through;
+}
+
+.net-price {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  font-family: yekanBold;
+}
+
 .open-story {
   background-color: #000000;
   height: 100vh;
@@ -415,6 +456,13 @@ body {
   z-index: 4;
   color: white;
   font-family: yekanMedium;
+  transform: scale(1.1);
+  transition: transform 0.1s ease-out;
+}
+
+.open-story.opened {
+  /* Update the scale value for the opened state */
+  transform: scale(1);
 }
 
 .close-container {
@@ -549,4 +597,43 @@ body {
   background-color: #f1d252;
   box-shadow: 0px 0px 4px 0px rgba(255, 205, 0, 0.2);
   width: 40px;
+}
+
+.best-sellers {
+  width: 100%;
+  direction: rtl;
+}
+.sellers-container {
+  display: flex;
+  overflow-x: auto;
+}
+
+.seller-container {
+  border: 1px solid black;
+  margin-right: 8px;
+  padding: 8px;
+}
+
+.sellers-title {
+  font-family: yekanBold;
+  font-size: 15px;
+  color: rgb(57, 57, 59);
+  margin: 24px;
+}
+
+.seller-logo {
+  height: 80px;
+  width: 90px;
+}
+
+.ads-count {
+  display: flex;
+  font-size: 12px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }

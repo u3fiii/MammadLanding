@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import TabAds from "./TabAds";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 
 function TabsContainer() {
   const [value, setValue] = useState(0);
   const [math, setMath] = useState(null);
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const items = ["خودکار", "اسباب‌ بازی", "لوازم ورزشی", "ریاضی"];
 
@@ -18,14 +21,17 @@ function TabsContainer() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `https://api.pindo.ir/v1/advertisement/search/?q=${query}&page=1`
         );
         const data = await response.json();
         console.log(data);
         setMath(data.data.advertisements);
+        setLoading(false);
       } catch (error) {
         console.log("Error fetching data:", error);
+        setLoading(false);
       }
     };
 
@@ -42,16 +48,40 @@ function TabsContainer() {
         <Tab label=" درس"></Tab>
       </Tabs>
       <TabPanel value={value} index={0}>
-        {math && <TabAds math={math} />}
+        {loading ? (
+          <div className="loading-container">
+            <CircularProgress />
+          </div>
+        ) : (
+          math && <TabAds math={math} />
+        )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {math && <TabAds math={math} />}
+        {loading ? (
+          <div className="loading-container">
+            <CircularProgress />
+          </div>
+        ) : (
+          math && <TabAds math={math} />
+        )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {math && <TabAds math={math} />}
+        {loading ? (
+          <div className="loading-container">
+            <CircularProgress />
+          </div>
+        ) : (
+          math && <TabAds math={math} />
+        )}
       </TabPanel>
       <TabPanel value={value} index={3}>
-        {math && <TabAds math={math} />}
+        {loading ? (
+          <div className="loading-container">
+            <CircularProgress />
+          </div>
+        ) : (
+          math && <TabAds math={math} />
+        )}
       </TabPanel>
     </div>
   );

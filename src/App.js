@@ -6,6 +6,7 @@ import TopSlider from "./components/TopSlider";
 import Categories from "./components/Categories";
 import SpecialAds from "./components/SpecialAds";
 import TabsContainer from "./components/TabsContainer";
+import BestSellers from "./components/BestSellers";
 
 import Logo from "./assets/img/pindo-logo.svg";
 
@@ -20,6 +21,7 @@ function App() {
       <Categories />
       <SpecialAds />
       <TabsContainer />
+      <BestSellers />
     </div>
   );
 }

@@ -4,8 +4,8 @@ import OpenedStory from "./OpenedStory";
 
 function SpecialAds() {
   const [ads, setAds] = useState([]);
-  const [openStory, setOpenStory] = useState(false); // New state for controlling OpenedStory component visibility
-  const [currentAdIndex, setCurrentAdIndex] = useState(null); // New state to store the ID of the selected ad
+  const [openStory, setOpenStory] = useState(false);
+  const [currentAdIndex, setCurrentAdIndex] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +49,6 @@ function SpecialAds() {
     <div className="container">
       <div className="container-title">
         <div>پیشنهاد ویژه</div>
-        <div className="stationary"> لوازم‌التحریر</div>
       </div>
       <div className="special-ads-wrapper">
         <div className="special-ads">
@@ -60,6 +59,7 @@ function SpecialAds() {
               onClick={() => handleOpenStory(index)}
             >
               <div className="image-wrapper">
+                <div className="loading-circle"></div>
                 <img
                   src={ad.images && ad.images.main}
                   className="special-img"
@@ -67,7 +67,7 @@ function SpecialAds() {
               </div>
               <div className="price-container">
                 <div className="price">{formatPrice(ad.price)}</div>
-                <img className="toman" src={toman} />
+                <img className="toman" src={toman} alt="Toman" />
               </div>
             </div>
           ))}
